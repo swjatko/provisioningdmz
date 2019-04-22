@@ -1,0 +1,35 @@
+---
+# Reboot VM
+# ansible-playbook playbooks/reboot.yml --extra-vars "hosts=vcaf_c ansible_become_pass=jnjnuh force_reboot=true" -v
+
+- hosts: '{{ host }}'
+  gather_facts: no
+  vars:
+    force_reboot: false
+    ansible_python_interpreter: python3
+
+  tasks:
+    - name: Check if reboot is required
+      stat: path=/var/run/reboot-required
+      async: 0
+      poll: 0
+      ignore_errors: true
+      register: reboot
+
+    - name: Restart server
+      shell: sleep 2 && shutdown -r now 'Reboot required'
+      become: true
+      async: 1
+      poll: 0
+      ignore_errors: true
+      when: reboot.stat.exists == true or force_reboot
+
+    - name: Wait for server to come back
+      local_action:
+          wait_for host={{ ansible_ssh_host }}
+          state=started
+          delay=30
+          timeout=300
+          port=22
+      become: false
+      when: reboot.stat.exists == true or force_reboot

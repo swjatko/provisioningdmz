@@ -1,0 +1,34 @@
+---
+- hosts: DMZ_Automation_internal
+  remote_user: maint
+  become: yes
+  become_user: root
+  
+  tasks:
+    - name: create jenkins user
+      user:
+        name: jenkins
+        password: "jenkins"
+        groups:
+           - docker
+           - sudo
+        createhome: yes
+        home: /srv/jenkins
+        state: present
+    - name: add git user to sudoers
+      copy:
+        dest: "/etc/sudoers.d/git"
+        content: "jenkins ALL=(ALL) NOPASSWD: ALL"
+    - name: deploy ssh key
+      authorized_key: user=jenkins
+                      key="{{ lookup('file', '/srv/jenkins/.ssh/id_rsa.pub') }}"
+                      state=present
+    - name: Disable Password Authentication
+      lineinfile:
+           dest=/etc/ssh/sshd_config
+           regexp='^PasswordAuthentication'
+           line="PasswordAuthentication no"
+           state=present
+           backup=yes
+      notify:
+       - restart ssh

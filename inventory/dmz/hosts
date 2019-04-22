@@ -1,0 +1,31 @@
+[DMZ_Automation_internal]
+A1 ansible_user=jenkins ansible_port=10021 ansible_ssh_host=10.200.0.101
+A2 ansible_user=jenkins ansible_port=10022 ansible_ssh_host=10.200.0.102
+A3 ansible_user=jenkins ansible_port=10023 ansible_ssh_host=10.200.0.103
+A4 ansible_user=jenkins ansible_port=10024 ansible_ssh_host=10.200.0.104
+A5 ansible_user=jenkins ansible_port=10025 ansible_ssh_host=10.200.0.105
+A6 ansible_user=jenkins ansible_port=10026 ansible_ssh_host=10.200.0.106
+A7 ansible_user=jenkins ansible_port=10027 ansible_ssh_host=10.200.0.107
+A8 ansible_user=jenkins ansible_port=10028 ansible_ssh_host=10.200.0.108
+A9 ansible_user=jenkins ansible_port=10029 ansible_ssh_host=10.200.0.109
+A10 ansible_user=jenkins ansible_port=10030 ansible_ssh_host=10.200.0.110
+A11 ansible_user=jenkins ansible_port=10031 ansible_ssh_host=10.200.0.111
+
+[DMZ_Automation_VM_internal]
+vsaf-node-1 ansible_user=jenkins ansible_ssh_host=10.200.0.201
+
+[DMZ_Automation_remote]
+A1-remote ansible_user=jenkins ansible_port=10021 ansible_ssh_host=93.178.233.102
+A2-remote ansible_user=jenkins ansible_port=10022 ansible_ssh_host=93.178.233.102
+A3-remote ansible_user=jenkins ansible_port=10023 ansible_ssh_host=93.178.233.102
+A4-remote ansible_user=jenkins ansible_port=10024 ansible_ssh_host=93.178.233.102
+A5-remote ansible_user=jenkins ansible_port=10025 ansible_ssh_host=93.178.233.102
+A6-remote ansible_user=jenkins ansible_port=10026 ansible_ssh_host=93.178.233.102
+A7-remote ansible_user=jenkins ansible_port=10027 ansible_ssh_host=93.178.233.102
+A8-remote ansible_user=jenkins ansible_port=10028 ansible_ssh_host=93.178.233.102
+A9-remote ansible_user=jenkins ansible_port=10029 ansible_ssh_host=93.178.233.102
+A10-remote ansible_user=jenkins ansible_port=10030 ansible_ssh_host=93.178.233.102
+A11-remote ansible_user=jenkins ansible_port=10031 ansible_ssh_host=93.178.233.102
+
+[DMZ_Automation_VM_remote]
+vsaf-node-1-remote ansible_user=jenkins ansible_port=10201 ansible_ssh_host=93.178.233.102

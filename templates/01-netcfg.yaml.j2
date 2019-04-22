@@ -1,0 +1,33 @@
+network:
+    ethernets:
+        eth0:
+            addresses: []
+            dhcp4: false
+            dhcp6: false
+            accept-ra: false
+    version: 2
+    vlans:
+        eth0.2000:
+            addresses:
+                - {{ item }}/24
+            dhcp4: false
+            dhcp6: false
+            accept-ra: false
+            gateway4: 10.200.0.1
+            id: 2000
+            link: eth0
+            nameservers:
+                addresses:
+                    - 10.200.0.1
+                search: []
+        {% for sw_num in range(1, 3) -%}
+        {% for port_num in range(1, 53) -%}
+        eth0.2{{ sw_num }}{{ '%02d'|format(port_num) }}:
+            addresses: []
+            dhcp4: false
+            dhcp6: false
+            accept-ra: false
+            id: 2{{ sw_num }}{{ '%02d'|format(port_num) }}
+            link: eth0
+        {% endfor %}
+        {%- endfor %}

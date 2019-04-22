@@ -1,0 +1,8 @@
+---
+# Prepares a new slave for jenkins
+# ansible-playbook playbooks/reboot.yml --extra-vars "hosts=vcaf_c ansible_become_pass=jnjnuh force_reboot=true" -v
+
+- include: set_oldstyle_ifnames.yml
+- include: disable_ipv6.yml
+- include: netplan_update.yml
+- include: reboot.yml

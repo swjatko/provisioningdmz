@@ -1,0 +1,39 @@
+---
+- hosts: DMZ_Automation_internal
+  remote_user: jenkins
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: add universe repo
+      apt_repository:
+        repo="deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
+        state=present
+    - name: refresh cache and install git
+      apt:
+        name=git
+        update_cache=yes
+    - name: refresh cache and install vnc4server
+      apt:
+        name=vnc4server
+        update_cache=yes
+    - name: refresh cache and install git
+      apt:
+        name=git
+        update_cache=yes
+    - name: refresh cache and install libraries 1
+      apt:
+        name=libelf-dev
+        update_cache=yes
+    - name: refresh cache and install libraries 2
+      apt:
+        name=build-essential
+        update_cache=yes
+    - name: refresh cache and install libraries3
+      apt:
+        name=dkms
+        update_cache=yes
+    - name: refresh cache and install libraries 4
+      apt:
+        name=openssl
+        update_cache=yes

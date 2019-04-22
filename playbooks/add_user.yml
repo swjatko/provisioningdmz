@@ -1,0 +1,37 @@
+---
+- hosts: DMZ_Automation
+  become: yes
+  become_user: root
+  
+  tasks:
+    - name: create git user
+      user: 
+        name: git 
+        createhome: yes
+        generate_ssh_key: yes         
+        state: present 
+      register: newuser
+
+    - name: add git user to sudoers
+      copy:
+        dest: "/etc/sudoers.d/git"
+        content: "git ALL=(ALL) NOPASSWD: ALL"
+
+    - name: deploy ssh key
+      authorized_key: user=git
+                      key="{{ lookup('file', '/home/git/.ssh/id_rsa.pub') }}"
+                      state=present
+
+    - name: Disable Password Authentication
+      lineinfile:
+           dest=/etc/ssh/sshd_config
+           regexp='^PasswordAuthentication'
+           line="PasswordAuthentication no"
+           state=present
+           backup=yes
+      notify:
+       - restart ssh
+
+    - name: generate random password for user only on creation
+      shell: /usr/bin/openssl rand -base64 32 | passwd --stdin git
+      when: newuser.changed

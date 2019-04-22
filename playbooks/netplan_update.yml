@@ -1,0 +1,21 @@
+---
+# update node network with all VLAN (ubuntu 18.04)
+
+- hosts: '{{ host }}'
+  become: yes
+  become_user: root
+  tasks:
+    - shell: ip addr show | grep "\.2000" | grep "inet\b" | awk '{print $2}' | cut -d/ -f1
+      register: management_ip
+
+    - name: delete old configs
+      shell: rm -rf /etc/netplan/*
+
+    - name: copy new config
+      template:
+        src: ../templates/01-netcfg.yaml.j2
+        dest: /etc/netplan/01-netcfg.yaml
+        owner: root
+        group: root
+        mode: 0644
+      with_items: '{{ management_ip.stdout }}'
