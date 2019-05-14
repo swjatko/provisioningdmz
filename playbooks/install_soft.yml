@@ -1,6 +1,6 @@
 ---
-- hosts: DMZ_Automation_internal
-  remote_user: jenkins
+- hosts: machines
+  remote_user: maint
   become: yes
   become_user: root
 
@@ -37,3 +37,60 @@
       apt:
         name=openssl
         update_cache=yes
+    - name: install wireshark
+      apt:
+        name=wireshark
+    - name: install tcpdump
+      apt:
+        name=tcpdump
+    - name: install iperf
+      apt: 
+        name=iperf
+    - name: install iperf3
+      apt:
+        name=iperf3
+    - name: install tftpd
+      apt:
+        name=tftpd
+    - name: install tftp
+      apt: 
+        name=tftp
+    - name: install minicom
+      apt: 
+        name=minicom
+    - name: install ktorrent
+      apt:
+        name=ktorrent
+    - name: install qbittorrent
+      apt:
+        name=qbittorrent
+    - name: install google chrome
+      apt: 
+        name=google-chrome
+    - name: install dig
+      apt:
+        name=dig
+    - name: install nslookup
+      apt:
+        name=nslookup
+    - name: install nmap
+      apt:
+        name=nmap
+    - name: install vconfig
+      apt:
+        name=vconfig
+    - name: install LinPhone
+      apt:
+        name=linphone
+    - name: install iwconfig
+      apt:
+        name=iwconfig
+    - name: install proftpd
+      apt:
+        name=proftpd
+    - name: install curl
+      apt:
+        name=curl
+    - name: install knemo
+      apt:
+        name=knemo
