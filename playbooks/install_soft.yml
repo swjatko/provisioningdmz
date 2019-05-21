@@ -3,40 +3,42 @@
   remote_user: maint
   become: yes
   become_user: root
-
+  vars:
+    - apt_file: /etc/apt/sources.list.d/google-chrome.list
   tasks:
-    - name: add universe repo
-      apt_repository:
-        repo="deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
-        state=present
+    - apt_repository:
+        repo: deb http://dl.google.com/linux/chrome/deb/ stable main
+        state: absent
+    - apt_repository:
+        repo: deb http://deb.debian.org/debian stretch main contrib non-free
+        state: present
+    - apt_repository:
+        repo: deb http://deb.debian.org/debian-security/ stretch/updates main contrib non-free
+        state: present
+    - apt_repository:
+        repo: deb http://deb.debian.org/debian stretch-updates main contrib non-free
+        state: present
     - name: refresh cache and install git
       apt:
         name=git
-        update_cache=yes
     - name: refresh cache and install vnc4server
       apt:
         name=vnc4server
-        update_cache=yes
     - name: refresh cache and install git
       apt:
         name=git
-        update_cache=yes
     - name: refresh cache and install libraries 1
       apt:
         name=libelf-dev
-        update_cache=yes
     - name: refresh cache and install libraries 2
       apt:
         name=build-essential
-        update_cache=yes
     - name: refresh cache and install libraries3
       apt:
         name=dkms
-        update_cache=yes
     - name: refresh cache and install libraries 4
       apt:
         name=openssl
-        update_cache=yes
     - name: install wireshark
       apt:
         name=wireshark
@@ -64,33 +66,49 @@
     - name: install qbittorrent
       apt:
         name=qbittorrent
-    - name: install google chrome
-      apt: 
-        name=google-chrome
-    - name: install dig
+    - name: install dig and nslookup
       apt:
-        name=dig
-    - name: install nslookup
-      apt:
-        name=nslookup
+        name=dnsutils
     - name: install nmap
       apt:
         name=nmap
     - name: install vconfig
       apt:
-        name=vconfig
+        name=vlan
     - name: install LinPhone
       apt:
         name=linphone
     - name: install iwconfig
       apt:
-        name=iwconfig
+        name=iw
     - name: install proftpd
       apt:
         name=proftpd
     - name: install curl
       apt:
         name=curl
-    - name: install knemo
-      apt:
-        name=knemo
+#    - name: install knemo
+#      apt:
+#        name=knemo
+
+##fuckin google chorme installation
+
+    - name: Does the Google apt file exist?
+      command: test -f {{apt_file}}
+      register: google_apt_exists
+      ignore_errors: True
+
+    - name: Add Google Chrome key
+      shell: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+      when: google_apt_exists.rc == 1
+
+    - name: Add Google Chrome repo
+      copy: content="deb http://dl.google.com/linux/chrome/deb/ stable main" dest={{apt_file}} owner=root group=root mode=644
+      when: google_apt_exists.rc == 1
+
+#    - name: Update apt cache
+#      apt: update_cache=yes
+#      when: google_apt_exists.rc == 1
+
+    - name: Install Google Chrome
+      apt: pkg=google-chrome-stable state=installed
