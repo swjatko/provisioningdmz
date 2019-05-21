@@ -112,3 +112,15 @@
 
     - name: Install Google Chrome
       apt: pkg=google-chrome-stable state=installed
+
+## Install FIREFOX with iMacros
+    - name: Copy firefox from server
+      copy:
+        src: /root/firefox/firefox.tar.bz2
+        dest: ~/firefox/firefox.tar.bz2
+        owner: maint
+        group: maint
+        mode: '0755'
+    - name: Untar firefox
+      unarchive: src=~/firefox/firefox.tar.bz2
+                 dest=~
